@@ -12,7 +12,6 @@ class about
 	static JFrame frame;
 	static JPanel panel, mainpanel;
 	static JLabel img, text;
-	static JButton about, quit, admin_login, register_fir, fill_details, view_details;
 
 	public static void display()
 	{
