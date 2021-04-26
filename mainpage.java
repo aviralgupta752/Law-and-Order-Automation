@@ -12,7 +12,7 @@ class mainpage
 	static JFrame frame;
 	static JPanel panel, panel1, panel2, mainpanel;
 	static JLabel lblkkh, img, space;
-	static JButton about, quit, admin_login, register_complaint, register_application, track_complaint;
+	static JButton about, quit, admin_login, police_login, register_complaint, register_application, track_complaint;
 
 	public static void display()
 	{
@@ -28,23 +28,24 @@ class mainpage
 		about = new JButton("<HTML><h2>About</h2></HTML>");
 		quit = new JButton("<HTML><h2>Quit</h2></HTML>");
 		admin_login = new JButton("<HTML><h2>Admin Login</h2></HTML>");
-		register_complaint = new JButton("<HTML><h2>Register Comlaint</h2></HTML>");
+		police_login = new JButton("<HTML><h2>Police Login</h2></HTML>");
+		register_complaint = new JButton("<HTML><h2>Register Complaint</h2></HTML>");
 		register_application = new JButton("<HTML><h2>Register Application</h2></HTML>");
 		track_complaint = new JButton("<HTML><h2>Track Complaint</h2></HTML>");
 
 		space = new JLabel("    ");
 
 		about.addActionListener(new CustomActionListener());
-		// admin_login.setBackground(new Color(192,192,192));
 		admin_login.addActionListener(new CustomActionListener());
-					 
-		quit.setBackground(new Color(255,92,96));
 		quit.addActionListener(new CustomActionListener());
-		
 		register_complaint.addActionListener(new CustomActionListener());
 
+		quit.setBackground(new Color(255,92,96));
+		
+		
 		panel1.add(about);
 		panel1.add(admin_login);
+		panel1.add(police_login);
 		panel1.add(register_complaint);
 		panel1.add(register_application);
 		panel1.add(track_complaint);
