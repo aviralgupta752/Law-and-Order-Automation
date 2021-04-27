@@ -11,16 +11,16 @@ public class police_application{
 	static JFrame frame;
 	static JButton btnSubmit, btnCancel;
 	static JPanel panel, panel1, panel2;
-	static JLabel lblDrugs, lblAids, lblName, lblLenses, lblDOB, lblEmail, lblContact, lblAddress, lblGender;
+	static JLabel lblDrugs, lblAids, lblName, lblLenses, lblDOB, lblEmail, lblContact, lblAddress, lblGender, lblDepartment;
 	static JTextField txtName, txtDOB, txtEmail, txtAddress, txtContact;
-	static JComboBox txtGender, txtDrugs, txtAids, txtLenses;
+	static JComboBox txtGender, txtDrugs, txtAids, txtLenses, txtDepartment;
 	static Border redline = BorderFactory.createLineBorder(Color.RED);
 	
 	public static void user_details()
 	{
 		frame = new JFrame("POLICE APPLICATION");
-		panel = new JPanel(new GridLayout(10,1,10,10));
-		panel1 = new JPanel(new GridLayout(10,1,10,10));
+		panel = new JPanel(new GridLayout(11,1,10,10));
+		panel1 = new JPanel(new GridLayout(11,1,10,10));
 		panel2 = new JPanel(new GridLayout(1,3,0,0));
 
 		//**************************************************************************************************************
@@ -31,6 +31,7 @@ public class police_application{
 		lblContact = new JLabel("<HTML><h3>Phone: </h3></HTML>", JLabel.CENTER);
 		lblAddress = new JLabel("<HTML><h3>Address: </h3></HTML>", JLabel.CENTER);
 		lblGender = new JLabel("<HTML><h3>Gender: </h3></HTML>", JLabel.CENTER);
+		lblDepartment = new JLabel("<HTML><h3>Department: </h3></HTML>", JLabel.CENTER);
 		lblDrugs = new JLabel("<HTML><h3>Have you ever been dependant on drugs or alcohol?</h3></HTML>", JLabel.CENTER);
 		lblAids = new JLabel("<HTML><h3>Do you use hearing aids?</h3></HTML>", JLabel.CENTER);
 		lblLenses = new JLabel("<HTML><h3>Do you use glasses for your eyesight?</h3></HTML>", JLabel.CENTER);
@@ -49,6 +50,10 @@ public class police_application{
 		txtEmail = new JTextField(60);
 		txtContact = new JTextField(60);
 		txtAddress = new JTextField(60);
+
+		String txtDepartmentOptions[] = {"Women Protection", "Cybercrime", "Traffic & Control", "Law and Order"};
+		txtDepartment = new JComboBox(txtDepartmentOptions);
+		txtDepartment.setSelectedIndex(0);
 
 		String txtGenderOptions[] = {"Male", "Female"};
 		txtGender = new JComboBox(txtGenderOptions);
@@ -72,6 +77,7 @@ public class police_application{
 		panel.add(lblName);			panel1.add(txtName);
 		panel.add(lblDOB);			panel1.add(txtDOB);
 		panel.add(lblGender);		panel1.add(txtGender);
+		panel.add(lblDepartment);		panel1.add(txtDepartment);
 		panel.add(lblEmail);		panel1.add(txtEmail);
 		panel.add(lblContact);		panel1.add(txtContact);
 		panel.add(lblAddress);		panel1.add(txtAddress);
