@@ -1,0 +1,11 @@
+{
+  "java.project.sourcePaths": [
+    "lawOrder/src/kanoon_ke_haath"
+  ],
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "/Users/anshverma/Downloads/hsqldb-2.6.0/hsqldb/lib/hsqldb-jdk8.jar",
+    "/Users/anshverma/Downloads/commons-io-2.8.0/commons-io-2.8.0.jar"
+  ],
+  "maven.view": "flat"
+}

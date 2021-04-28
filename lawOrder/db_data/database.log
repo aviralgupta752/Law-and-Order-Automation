@@ -1,0 +1,20 @@
+/*C4*/SET SCHEMA PUBLIC
+create table if not exists \u000a\u0009administrator (pd_id varchar(45))
+create table if not exists\u000a\u0009police_dept(pd_id varchar(45), pd_city varchar(45), pd_area varchar(45), po_id varchar(45), app_id varchar(45), crim_id varchar(45), fir_id varchar(45))
+create table if not exists\u000a\u0009fir(fir_id varchar(45), fir_desc varchar(45), fir_type varchar(45), po_id varchar(45))
+create table if not exists\u000a\u0009police_officer(po_id varchar(45),po_city varchar(45), po_name varchar(45))
+create table if not exists\u000a\u0009criminal(crim_id varchar(45), crim_desc varchar(45), crim_name varchar(45), crim_age varchar(45), crim_pd varchar(45), pd_id varchar(45))
+create table if not exists\u000a\u0009applic(app_id varchar(45), app_type varchar(45), app_userinfo varchar(45), app_officer varchar(45), po_id varchar(45))
+INSERT INTO ADMINISTRATOR VALUES('PD001')
+COMMIT
+INSERT INTO POLICE_DEPT VALUES('PD001','allahabad','iiita','PO001','AP001','CR001','FIR001')
+COMMIT
+INSERT INTO FIR VALUES('FIR001','hurt','murder','PO001')
+COMMIT
+INSERT INTO POLICE_OFFICER VALUES('PO001','allahabad','nagabhosdika')
+COMMIT
+INSERT INTO CRIMINAL VALUES('CR001','nagamurder','ansh','20','hbnfg','PD001')
+COMMIT
+INSERT INTO APPLIC VALUES('AP001','edbne','mbnfm','hbnv','PO001')
+COMMIT
+DISCONNECT
