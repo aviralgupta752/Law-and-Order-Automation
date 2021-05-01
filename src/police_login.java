@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import kanoon_ke_haath.police_officer_panel;
 class police_login
 {
     static JFrame frame;
@@ -66,7 +67,7 @@ class police_login
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
     
-    public static void test_values() throws SQLException, ClassNotFoundException {
+    public static void test_values(String username) throws SQLException, ClassNotFoundException {
             System.out.println("Attempting to contact DB ... ");
 
             try {
@@ -76,25 +77,37 @@ class police_login
             }
             
             try {
+                String department="";
                 // will create DB if does not exist
                 // "SA" is default user with hypersql
                 con = DriverManager.getConnection(connectionString, "SA", "");
+                // Getting current officer's department
+                String sql_dep="select PO_DEP from police_officer as t where t.PO_NAME=?";
+                PreparedStatement pst_dep = con.prepareStatement(sql_dep);
                 
-                ResultSet rs = con.createStatement().executeQuery("select * from fir");
-                System.out.println("In FIR: ");
-                while (rs.next()) {
-                  System.out.println(rs.getString(1));
-                  System.out.println(rs.getString(2));
-                  System.out.println(rs.getString(3));
-                  System.out.println(rs.getString(4));
-                  System.out.println(rs.getString(5));
-                  System.out.println(rs.getString(6));
-                  System.out.println(rs.getString(7));
-                  System.out.println(rs.getString(8));
-                  System.out.println(rs.getString(9));
+                pst_dep.setString(1, username);
+                ResultSet rs_dep=pst_dep.executeQuery();
+                if(rs_dep.next()){
+                    department=rs_dep.getString("PO_DEP");
                 }
+                // Getting all complaints with this department
+                String sql_fir="select * from fir as t where t.FIR_DEP=?";
+                PreparedStatement pst_fir = con.prepareStatement(sql_fir);
                 
-
+                pst_fir.setString(1, department);
+                
+                ResultSet rs_fir=pst_fir.executeQuery();
+                while(rs_fir.next()){
+                    System.out.println(rs_fir.getString(1));
+                    System.out.println(rs_fir.getString(2));
+                    System.out.println(rs_fir.getString(3));
+                    System.out.println(rs_fir.getString(4));
+                    System.out.println(rs_fir.getString(5));
+                    System.out.println(rs_fir.getString(6));
+                    System.out.println(rs_fir.getString(7));
+                    System.out.println(rs_fir.getString(8));
+                    System.out.println(rs_fir.getString(9));
+                }
               } catch (SQLException e) {
                 throw e;
               } finally {
@@ -105,20 +118,54 @@ class police_login
         public void actionPerformed(ActionEvent e) {
             String username = txtUser.getText();
             String password = txtPass.getText();
-            if (username.trim().equals("test") && password.trim().equals("pass1")){
+            try {
+              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+            } catch (ClassNotFoundException ae) {
                 try {
-                    test_values();
+                    throw ae;
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(police_login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            try {
+                con = DriverManager.getConnection(connectionString, "SA", "");
+                // Getting current officer's department
+                String sql="select * from police_officer_list where USERNAME=? and PASSWORD=?";
+                PreparedStatement pst = con.prepareStatement(sql);
+                
+                pst.setString(1, username);
+                pst.setString(2, password);
+                ResultSet rs=pst.executeQuery();
+                if(rs.next()){
+                    try {
+                        System.out.println("Logging in successfully");
+//                    test_values(username);
+                        police_officer_panel.main(new String[]{username});
                 } catch (SQLException ex) {
                     Logger.getLogger(police_login.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(police_login.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 frame.setVisible(false);
-                // adminpage.init();                
-            }
+                }
             else{
                 JOptionPane.showMessageDialog(null, "Incorrect Password");
             }
+            }  
+            catch (SQLException ee) {
+                try {
+                    throw ee;
+                } catch (SQLException ex) {
+                    Logger.getLogger(police_login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+              } finally {
+                try {
+                    con.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(police_login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+              }
         }
     }
     
