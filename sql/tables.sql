@@ -1,11 +1,11 @@
 create table if not exists
 	administrator (pd_id varchar(45));
 
-	CREATE TABLE if not exists
-		police_dept(
-		   "PD_ID" INT not null primary key
-		        GENERATED ALWAYS AS IDENTITY
-		        (START WITH 1, INCREMENT BY 1),
+CREATE TABLE if not exists
+	police_dept(
+			"PD_ID" INT not null primary key
+		    	GENERATED ALWAYS AS IDENTITY
+		      (START WITH 1, INCREMENT BY 1),
 			"PD_NAME" VARCHAR(45),
 			"PD_LOC" VARCHAR(45),
 		  "PD_CITY" VARCHAR(45),
@@ -49,12 +49,40 @@ CREATE TABLE if not exists
 		 "PO_AID" VARCHAR(45),
 		 "PO_LENSES" VARCHAR(45),
 	);
+CREATE TABLE if not exists
+	police_officer_list(
+	  "USERNAME" VARCHAR(45),
+	  "PASSWORD" VARCHAR(45)
+	);
 	CREATE TABLE if not exists
-		police_officer_list(
-		   "USERNAME" VARCHAR(45),
-		   "PASSWORD" VARCHAR(45)
-		);
-create table if not exists
-	criminal(crim_id varchar(45), crim_desc varchar(45), crim_name varchar(45), crim_age varchar(45), crim_pd varchar(45), pd_id varchar(45));
-create table if not exists
-	applic(app_id varchar(45), app_type varchar(45), app_userinfo varchar(45), app_officer varchar(45), po_id varchar(45));
+	criminal(
+		"CRIM_ID" INT not null primary key
+			 GENERATED ALWAYS AS IDENTITY
+			 (START WITH 1, INCREMENT BY 1),
+	   "CRIM_NAME" VARCHAR(45),
+	   "CRIM_AGE" INT,
+	   "CRIM_GENDER" VARCHAR(45),
+	   "CRIM_ADDRESS" VARCHAR(100),
+		 "CRIM_CONTACT" VARCHAR(45),
+	   "CRIM_DOC" VARCHAR(45),
+		 "CRIM_DESC" VARCHAR(200),
+		 "CRIM_CRIME_DEP" VARCHAR(45),
+		 "CRIM_PS" VARCHAR(45),
+	);
+CREATE TABLE if not exists
+	applic(
+		"APP_ID" INT not null primary key
+			 GENERATED ALWAYS AS IDENTITY
+			 (START WITH 1, INCREMENT BY 1),
+		"APP_TYPE" VARCHAR(45),
+	  "APP_NAM" VARCHAR(45),
+	  "APP_FNAME" VARCHAR(45),
+	  "APP_EMAIL" VARCHAR(45),
+	  "APP_CONTACT" VARCHAR(45),
+	  "APP_DOI" VARCHAR(45),
+		"APP_PAN" VARCHAR(45),
+		"APP_AADHAR" VARCHAR(200),
+		"APP_PO_NAME" VARCHAR(45),
+		"APP_PO_ID" INT,
+		"APP_PS" VARCHAR(45)
+	);
