@@ -68,12 +68,11 @@ class mainpage
 
 		img = new JLabel(" ", JLabel.CENTER);
 		BufferedImage image = null;
-//                URL url = null;
+
 		try 
 		{
                     image = ImageIO.read(new File("src_img/img.png"));
-//                    url = mainpage.class.getResource("/img.png");
-//                    image = ImageIO.read(url);
+
 		} 
 		catch (Exception e) 
 		{
@@ -135,6 +134,7 @@ class mainpage
 	
         public static void set_up_database() throws ClassNotFoundException, Exception {
             String createTables = readToString("sql/tables.sql");
+            
             String addValues = readToString("sql/insertVal.sql");
             
             System.out.println("Attempting to contact DB ... ");
@@ -152,9 +152,19 @@ class mainpage
 
 //                 create tables
                 con.createStatement().executeUpdate(createTables);
-
+                
+                String sql="SELECT TOP 1 1 FROM police_dept";
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs=pst.executeQuery();
+                if(rs.next()){
+                    System.out.println("Table is not empty and database is set already");
+                }
+                else{
+                    System.out.println("Table is not set, call insertTables.sql");
+                    con.createStatement().executeUpdate(addValues);
+                }
                 // add random values in tables
-                con.createStatement().executeUpdate(addValues);
+//                con.createStatement().executeUpdate(addValues);
 
 
               } catch (SQLException e) {
