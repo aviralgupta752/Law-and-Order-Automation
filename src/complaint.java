@@ -22,8 +22,8 @@ public class complaint{
 
 	static JTextArea txtArea;
 	
-	static JLabel lblFatherName, lblName, lblEmail, lblContact, lblDOI, lblPOI, lblDepartment, lblDesc;
-	static JTextField txtName, txtFatherName, txtEmail, txtDOI, txtPOI, txtContact;
+	static JLabel lblFatherName, lblName, lblEmail, lblContact, lblDOI, lblPS, lblDepartment, lblDesc;
+	static JTextField txtName, txtFatherName, txtEmail, txtDOI, txtPS, txtContact;
 	static JComboBox txtDepartment;
 	static Border redline = BorderFactory.createLineBorder(Color.RED);
 	
@@ -43,7 +43,7 @@ public class complaint{
 			lblEmail = new JLabel("<HTML><h3>Email: </h3></HTML>", JLabel.CENTER);
 			lblContact = new JLabel("<HTML><h3>Phone: </h3></HTML>", JLabel.CENTER);
 			lblDOI = new JLabel("<HTML><h3>Date of Issue: </h3></HTML>", JLabel.CENTER);
-			lblPOI = new JLabel("<HTML><h3>Place of Issue: </h3></HTML>", JLabel.CENTER);
+			lblPS = new JLabel("<HTML><h3>Name of police station </h3></HTML>", JLabel.CENTER);
 			lblDepartment = new JLabel("<HTML><h3>Department: </h3></HTML>", JLabel.CENTER);
 			lblDesc  = new JLabel("<HTML><h3>Description: </h3></HTML>", JLabel.CENTER);
 
@@ -61,13 +61,13 @@ public class complaint{
 			txtEmail = new JTextField(60);
 			txtContact = new JTextField(60);
 			txtDOI = new JTextField(60);
-			txtPOI = new JTextField(60);
+			txtPS = new JTextField(60);
 
 			txtArea = new JTextArea(5, 20);
 			JScrollPane scrollPane = new JScrollPane(txtArea); 
 			txtArea.setEditable(true);
 
-			String txtDepartmentOptions[] = {"Women Protection", "Cybercrime", "Traffic & Control", "Law and Order", "Other"};
+			String txtDepartmentOptions[] = {"Women Protection", "Cybercrime", "Traffic & Control", "Law and Order"};
 			txtDepartment = new JComboBox(txtDepartmentOptions);
 			txtDepartment.setSelectedIndex(0);
 
@@ -76,7 +76,7 @@ public class complaint{
 			txtEmail.setInputVerifier(new PassVerifier());
 			txtContact.setInputVerifier(new PassVerifier());
 			txtDOI.setInputVerifier(new PassVerifier());
-			txtPOI.setInputVerifier(new PassVerifier());
+			txtPS.setInputVerifier(new PassVerifier());
 
 			panel2.add(new JLabel("<HTML><h1>What is a police complaint?</h1><h3>A Police Complaint is initial reporting of any crime or offence. "
                                 + "It is a narration of facts about the incident in layman’s words.</h3><h1>When can a police complaint be filed?</h1><h3>One should "
@@ -90,7 +90,7 @@ public class complaint{
 			panel.add(lblEmail);		panel1.add(txtEmail);
 			panel.add(lblContact);		panel1.add(txtContact);
 			panel.add(lblDOI);			panel1.add(txtDOI);
-			panel.add(lblPOI);			panel1.add(txtPOI);
+			panel.add(lblPS);			panel1.add(txtPS);
 			panel.add(lblDepartment);	panel1.add(txtDepartment);
 			panel.add(lblDesc);			panel1.add(scrollPane);
 			panel.add(btnCancel);		panel1.add(btnSubmit);
@@ -108,7 +108,7 @@ public class complaint{
 	static class PassVerifier extends InputVerifier {
 		public boolean verify(JComponent input)
 		{
-			if(input.equals(txtName) || input.equals(txtFatherName) || input.equals(txtPOI)) 
+			if(input.equals(txtName) || input.equals(txtFatherName) || input.equals(txtPS)) 
 			{
 				String text = ((JTextField) input).getText();
 				if (text.matches("[a-zA-Z ]+")) // Reads: "Any of a-z or A-Z or space one or more times (together, not each)" ---> blank field or field containing anything other than those will return false.
@@ -198,13 +198,30 @@ public class complaint{
                 String contact = txtContact.getText();
                 String email = txtEmail.getText();
                 String doi = txtDOI.getText();
-                String poi = txtPOI.getText();
+                String ps = txtPS.getText();
                 String dep = String.valueOf(txtDepartment.getSelectedItem());
                 String desc = txtArea.getText();
-                String query = "INSERT INTO fir (FIR_NAME, FIR_FNAME, FIR_EMAIL, FIR_CONTACT, FIR_DOI, FIR_POI, FIR_DEP, FIR_DESC) VALUES('"+name+"','"+fname+"','"+email+"','"+contact+"','"+doi+"','"+poi+"','"+dep+"','"+desc+"');";
-                result = stmt.executeUpdate(query);
-                con.commit();
+                int stat=0;
+//                String query = "INSERT INTO fir (FIR_NAME, FIR_FNAME, FIR_EMAIL, FIR_CONTACT, FIR_DOI, FIR_POI, FIR_DEP, FIR_DESC) VALUES('"+name+"','"+fname+"','"+email+"','"+contact+"','"+doi+"','"+poi+"','"+dep+"','"+desc+"');";
+//                result = stmt.executeUpdate(query);
+//                con.commit();
+                String sql="INSERT INTO fir (FIR_NAME, FIR_FNAME, FIR_EMAIL, FIR_CONTACT, FIR_DOI, FIR_PS, FIR_DEP, FIR_DESC, FIR_STAT, FIR_EMAIL_SENT, FIR_PO_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+                PreparedStatement pst = con.prepareStatement(sql);
+                
+                pst.setString(1, name);
+                pst.setString(2, fname);
+                pst.setString(3, email);
+                pst.setString(4, contact);
+                pst.setString(5, doi);
+                pst.setString(6, ps);
+                pst.setString(7, dep);
+                pst.setString(8, desc);
+                pst.setInt(9, stat);
+                pst.setInt(10, stat);
+                pst.setString(11, "");
 
+                pst.executeUpdate();
+                System.out.println("fir_po_id working fine");
               } catch (SQLException e) {
                 throw e;
               } finally {
