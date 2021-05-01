@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import kanoon_ke_haath.police_application;
 import kanoon_ke_haath.test_police_officer_data;
+import kanoon_ke_haath.police_station;
+import kanoon_ke_haath.show_police_station_verification;
 class admin_page
 {
 	static JFrame frame;
@@ -96,17 +98,12 @@ class admin_page
 			if(source == addofficerBtn){
                             police_application.init();
                         }
-//                        else if(source == showpsBtn){
-//                            try {
-//                                test_police_officer_data.init();
-//                            } catch (Exception ex) {
-//                                Logger.getLogger(admin_page.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
-			// else if(source == register_complaint){
-			// 	user_login.init();
-			// 	//new user_login().user_frame.setVisible(true);
-			// }
+                        else if(source == addpsBtn){
+                            police_station.init();
+                        }
+                        else if(source == showpsBtn){
+                            show_police_station_verification.init();
+                        }
 			// else if(source == view_details){
 			// 	user_login_2.init();
 			// 	//viewpage.init();
