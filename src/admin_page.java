@@ -15,48 +15,57 @@ import kanoon_ke_haath.police_application;
 import kanoon_ke_haath.test_police_officer_data;
 import kanoon_ke_haath.police_station;
 import kanoon_ke_haath.show_police_station_verification;
+import kanoon_ke_haath.register_criminal;
+import kanoon_ke_haath.edit_ps;
 class admin_page
 {
 	static JFrame frame;
 	static JPanel panel, panel1, panel2, mainpanel;
 	static JLabel lbladmin, img, space;
-	static JButton addofficerBtn, quitBtn, showpsBtn, addpsBtn;
+	static JButton addofficerBtn, quitBtn, showpsBtn, addpsBtn, addcrimBtn, editpsBtn;
 
-	public static void display()
+	public void display()
 	{
-		frame = new JFrame("Main Screen");
-		panel = new JPanel(new BorderLayout(10,10));
-		panel1 = new JPanel(new GridLayout(8,1,10,10));
-		panel2 = new JPanel(new GridLayout(1,2,10,10));
-		mainpanel = new JPanel(new GridLayout(1,1,10,10));
+                frame = new JFrame("Main Screen");
+		panel = new JPanel(new BorderLayout(10, 10));
+		panel1 = new JPanel(new GridLayout(8, 1, 10, 10));
+		panel2 = new JPanel(new GridLayout(1, 2, 10, 10));
+		mainpanel = new JPanel(new GridLayout(1, 1, 10, 10));
 
-		lbladmin = new JLabel("<HTML><h1>ADMINISTRATOR</h1><h3><center><i>Duniya k Rakhwaale</i></center></h3></HTML>", JLabel.CENTER);
-		lbladmin.setForeground(new Color(255,189,68));
+		lbladmin = new JLabel("<HTML><h1>ADMINISTRATOR</h1><h3><center><i>Duniya k Rakhwaale</i></center></h3></HTML>",
+				JLabel.CENTER);
+		lbladmin.setForeground(new Color(255, 189, 68));
 
 		addpsBtn = new JButton("<HTML><h2>Add Police Station</h2></HTML>");
 		showpsBtn = new JButton("<HTML><h2>Show Police Station</h2></HTML>");
 		addofficerBtn = new JButton("<HTML><h2>Appoint a Police Officer</h2></HTML>");
 		quitBtn = new JButton("<HTML><h2>Quit</h2></HTML>");
-		
+		addcrimBtn = new JButton("<HTML><h2>Register criminal</h2></HTML>");
+                editpsBtn = new JButton("<HTML><h2>Edit police station</h2></HTML>");
 		space = new JLabel("    ");
 
 		addpsBtn.addActionListener(new CustomActionListener());
 		showpsBtn.addActionListener(new CustomActionListener());
 		addofficerBtn.addActionListener(new CustomActionListener());
 		quitBtn.addActionListener(new CustomActionListener());
-
+                addcrimBtn.addActionListener(new CustomActionListener());
+                editpsBtn.addActionListener(new CustomActionListener());
+                
 		quitBtn.setBackground(new Color(255,92,96));
 		
 		panel1.add(addpsBtn);
 		panel1.add(showpsBtn);
 		panel1.add(addofficerBtn);
-		panel1.add(quitBtn);
-
+                panel1.add(addcrimBtn);
+		
+                panel1.add(editpsBtn);
+                panel1.add(quitBtn);
+                
 		img = new JLabel(" ", JLabel.CENTER);
 		BufferedImage image = null;
 		try 
 		{
-            image = ImageIO.read(new File("src_img/badge.jpg"));
+                    image = ImageIO.read(getClass().getClassLoader().getResource("badge.jpg"));
 		} 
 		catch (Exception e) 
 		{
@@ -95,22 +104,21 @@ class admin_page
 		public void actionPerformed(ActionEvent ae) {
 			Object source = ae.getSource();
 
-			if(source == addofficerBtn){
-                            police_application.init();
-                        }
-                        else if(source == addpsBtn){
-                            police_station.init();
-                        }
-                        else if(source == showpsBtn){
-                            show_police_station_verification.init();
-                        }
-			// else if(source == view_details){
-			// 	user_login_2.init();
-			// 	//viewpage.init();
-			// }
-                        else if(source == quitBtn){
-                            frame.setVisible(false);
+			if (source == addofficerBtn) {
+				police_application.init();
+			} else if (source == addpsBtn) {
+				police_station.init();
+			} else if (source == showpsBtn) {
+				show_police_station_verification.main(new String[]{"No"});
+			} else if (source == addcrimBtn) {
+				register_criminal.init();
 			}
+                        else if (source == editpsBtn) {
+                                show_police_station_verification.main(new String[]{"Yes"});
+                        } 
+                        else if (source == quitBtn) {
+				frame.setVisible(false);
+                        }
 		}
 	}
 			
