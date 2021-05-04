@@ -18,9 +18,11 @@ class show_police_station_verification
     static JCheckBox show_pass;
     
     static Connection con;
-    static String connectionString = "jdbc:hsqldb:file:db_data/database;hsqldb.lock_file=false";
-    static void display()
+    static String edit_ps_flag_arg;
+    
+    static void display(String edit_ps_flag)
     {
+        edit_ps_flag_arg = edit_ps_flag;
         frame = new JFrame("POLICE LOGIN");
         lblWelcome = new JLabel("<HTML><h2>Welcome Admin!</h2></HTML>", JLabel.CENTER);
         lblUsername = new JLabel("<HTML><h3>Name of police station: </h3></HTML>");
@@ -70,7 +72,7 @@ class show_police_station_verification
             System.out.println("Attempting to contact DB ... ");
 
             try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+              Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException e) {
               throw e;
             }
@@ -78,7 +80,7 @@ class show_police_station_verification
             try {
                 // will create DB if does not exist
                 // "SA" is default user with hypersql
-                con = DriverManager.getConnection(connectionString, "SA", "");
+                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 // Getting info of selected police department
                 String sql_dep="select * from police_dept as t where t.PD_NAME=?";
                 PreparedStatement pst_dep = con.prepareStatement(sql_dep);
@@ -132,7 +134,7 @@ class show_police_station_verification
                 flag=1;
             }
             try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+              Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException ae) {
                 try {
                     throw ae;
@@ -142,7 +144,7 @@ class show_police_station_verification
             }
             
             try {
-                con = DriverManager.getConnection(connectionString, "SA", "");
+                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 // Getting current officer's department
                 String sql="select * from police_dept where PD_NAME=?";
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -154,7 +156,12 @@ class show_police_station_verification
                     if(rs.next()){
                         try {
                             System.out.println("Logged in successfully");
-                            test_values(username);
+                            if(edit_ps_flag_arg.trim().equals("Yes")){
+                                edit_ps.main(new String[]{username});
+                            }
+                            else{
+                                test_values(username);
+                            }
                     } catch (SQLException ex) {
                         Logger.getLogger(police_login.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {
@@ -183,7 +190,7 @@ class show_police_station_verification
         }
     }
     
-    static void init()
+    static void init(String edit_ps_flag)
     {
         try
         {
@@ -195,11 +202,12 @@ class show_police_station_verification
         }
 
         show_police_station_verification obj = new show_police_station_verification();
-        obj.display();
+        obj.display(edit_ps_flag);
     }
     public static void main(String []args)
     {
-        init();
+        String edit_ps_flag = args[0];
+        init(edit_ps_flag);
     }
 }
 
