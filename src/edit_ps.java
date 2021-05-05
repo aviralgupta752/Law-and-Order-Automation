@@ -75,6 +75,7 @@ public class edit_ps{
 		frame.setSize(1920,1080);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.getRootPane().setDefaultButton(btnSubmit);
                 set_values(ps_name_arg);
 	}
 	static class PassVerifier extends InputVerifier {
