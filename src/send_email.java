@@ -33,13 +33,15 @@ public class send_email {
             ArrayList<String> assigned_fir = new ArrayList<String>();
             ArrayList<String> email_body = new ArrayList<String>();
             try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+                Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException e) {
               throw e;
             }
             
             try {
-                con = DriverManager.getConnection(connectionString, "SA", "");
+//                con = DriverManager.getConnection(connectionString, "SA", "");
+                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 
                 String sql_fir="select FIR_ID from fir as t where t.FIR_STAT=? and t.FIR_EMAIL_SENT=?";
                 PreparedStatement pst_fir = con.prepareStatement(sql_fir);
@@ -101,7 +103,8 @@ public class send_email {
                 String to="";
                 String fir_po_id="";
                 try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+                    Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException e) {
               throw e;
             }
@@ -109,7 +112,8 @@ public class send_email {
             try {
                 // will create DB if does not exist
                 // "SA" is default user with hypersql
-                con = DriverManager.getConnection(connectionString, "SA", "");
+//                con = DriverManager.getConnection(connectionString, "SA", "");
+                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 // Getting info of selected police department
                 String sql_fir="select * from fir as t where t.FIR_ID=?";
                 PreparedStatement pst_fir = con.prepareStatement(sql_fir);
@@ -141,7 +145,7 @@ public class send_email {
                     email_body.add(rs_fir.getString(8) + "\n");
                     
                     email_body.add("\tShort description: ");
-                    email_body.add(rs_fir.getString(9) + "\n");
+                    email_body.add(rs_fir.getString(9) + "\n\n");
                     
                     fir_po_id = rs_fir.getString(12);
                 }
@@ -212,7 +216,8 @@ public class send_email {
                 
                 // Setting FIR_EMAIL_SENT to 1
                 try {
-                con = DriverManager.getConnection(connectionString, "SA", "");
+//                con = DriverManager.getConnection(connectionString, "SA", "");
+                    con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 
                 // Updating value of fir_id status
 
