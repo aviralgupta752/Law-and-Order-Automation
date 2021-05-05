@@ -65,61 +65,65 @@ class police_login
         frame.setVisible(true);
         frame.setLayout(new GridLayout(8,1));
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.getRootPane().setDefaultButton(btnLogin);
     }
-    
-    public static void test_values(String username) throws SQLException, ClassNotFoundException {
-            System.out.println("Attempting to contact DB ... ");
-
-            try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            } catch (ClassNotFoundException e) {
-              throw e;
-            }
-            
-            try {
-                String department="";
-                // will create DB if does not exist
-                // "SA" is default user with hypersql
-                con = DriverManager.getConnection(connectionString, "SA", "");
-                // Getting current officer's department
-                String sql_dep="select PO_DEP from police_officer as t where t.PO_NAME=?";
-                PreparedStatement pst_dep = con.prepareStatement(sql_dep);
-                
-                pst_dep.setString(1, username);
-                ResultSet rs_dep=pst_dep.executeQuery();
-                if(rs_dep.next()){
-                    department=rs_dep.getString("PO_DEP");
-                }
-                // Getting all complaints with this department
-                String sql_fir="select * from fir as t where t.FIR_DEP=?";
-                PreparedStatement pst_fir = con.prepareStatement(sql_fir);
-                
-                pst_fir.setString(1, department);
-                
-                ResultSet rs_fir=pst_fir.executeQuery();
-                while(rs_fir.next()){
-                    System.out.println(rs_fir.getString(1));
-                    System.out.println(rs_fir.getString(2));
-                    System.out.println(rs_fir.getString(3));
-                    System.out.println(rs_fir.getString(4));
-                    System.out.println(rs_fir.getString(5));
-                    System.out.println(rs_fir.getString(6));
-                    System.out.println(rs_fir.getString(7));
-                    System.out.println(rs_fir.getString(8));
-                    System.out.println(rs_fir.getString(9));
-                }
-              } catch (SQLException e) {
-                throw e;
-              } finally {
-                con.close();
-              }
-    }
+//    
+//    public static void test_values(String username) throws SQLException, ClassNotFoundException {
+//            System.out.println("Attempting to contact DB ... ");
+//
+//            try {
+////              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//              Class.forName("com.mysql.jdbc.Driver");
+//            } catch (ClassNotFoundException e) {
+//              throw e;
+//            }
+//            
+//            try {
+//                String department="";
+//                // will create DB if does not exist
+//                // "SA" is default user with hypersql
+////                con = DriverManager.getConnection(connectionString, "SA", "");
+//                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
+//                // Getting current officer's department
+//                String sql_dep="select PO_DEP from police_officer as t where t.PO_NAME=?";
+//                PreparedStatement pst_dep = con.prepareStatement(sql_dep);
+//                
+//                pst_dep.setString(1, username);
+//                ResultSet rs_dep=pst_dep.executeQuery();
+//                if(rs_dep.next()){
+//                    department=rs_dep.getString("PO_DEP");
+//                }
+//                // Getting all complaints with this department
+//                String sql_fir="select * from fir as t where t.FIR_DEP=?";
+//                PreparedStatement pst_fir = con.prepareStatement(sql_fir);
+//                
+//                pst_fir.setString(1, department);
+//                
+//                ResultSet rs_fir=pst_fir.executeQuery();
+//                while(rs_fir.next()){
+//                    System.out.println(rs_fir.getString(1));
+//                    System.out.println(rs_fir.getString(2));
+//                    System.out.println(rs_fir.getString(3));
+//                    System.out.println(rs_fir.getString(4));
+//                    System.out.println(rs_fir.getString(5));
+//                    System.out.println(rs_fir.getString(6));
+//                    System.out.println(rs_fir.getString(7));
+//                    System.out.println(rs_fir.getString(8));
+//                    System.out.println(rs_fir.getString(9));
+//                }
+//              } catch (SQLException e) {
+//                throw e;
+//              } finally {
+//                con.close();
+//              }
+//    }
     static class CustomActionListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             String username = txtUser.getText();
             String password = txtPass.getText();
             try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+              Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException ae) {
                 try {
                     throw ae;
@@ -129,7 +133,8 @@ class police_login
             }
             
             try {
-                con = DriverManager.getConnection(connectionString, "SA", "");
+//                con = DriverManager.getConnection(connectionString, "SA", "");
+                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 // Getting current officer's department
                 String sql="select * from police_officer_list where USERNAME=? and PASSWORD=?";
                 PreparedStatement pst = con.prepareStatement(sql);
