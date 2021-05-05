@@ -66,6 +66,7 @@ class show_police_station_verification
         frame.setVisible(true);
         frame.setLayout(new GridLayout(8,1));
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.getRootPane().setDefaultButton(btnLogin);
     }
     
     public static void test_values(String username) throws SQLException, ClassNotFoundException {
