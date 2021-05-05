@@ -9,8 +9,13 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 
 import org.apache.commons.io.FileUtils;
 
@@ -26,9 +31,10 @@ public class complaint{
 	static JTextField txtName, txtFatherName, txtEmail, txtDOI, txtPS, txtContact;
 	static JComboBox txtDepartment;
 	static Border redline = BorderFactory.createLineBorder(Color.RED);
-	
+        
+        static String name, fname, contact, email, doi, ps, dep, desc;
         static Connection con;
-        static String connectionString = "jdbc:hsqldb:file:db_data/database;hsqldb.lock_file=false";
+        static UUID idOne;
 	public static void user_details()
 	{
 		frame = new JFrame("FILL DETAILS");
@@ -85,6 +91,8 @@ public class complaint{
                                 + "In such cases, even if there is a delay one can file a police complaint.</h3><h1>Who can file a Police Complaint?</h1><h3>Anyone "
                                 + "can file a police complaint. The victim of the crime, victim’s family members, friends or any witness to the crime can file a police "
                                 + "complaint.</h3></HTML>", JLabel.CENTER));
+//                        panel2.add(stat);
+//                        panel2.add("jProgressBar", jProgressBar);
 			panel.add(lblName);			panel1.add(txtName);
 			panel.add(lblFatherName);	panel1.add(txtFatherName);
 			panel.add(lblEmail);		panel1.add(txtEmail);
@@ -95,14 +103,17 @@ public class complaint{
 			panel.add(lblDesc);			panel1.add(scrollPane);
 			panel.add(btnCancel);		panel1.add(btnSubmit);
 			panel2.add(panel);
+                        
 			panel2.add(panel1);
 			// panel.setBackground(new Color(45, 45, 45));
 			panel2.setBackground(new Color(255,189,68));
 
 			frame.setContentPane(panel2);
+                        
 			frame.setSize(1920,1080);
 			frame.setVisible(true);
 			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                        frame.getRootPane().setDefaultButton(btnSubmit);
 		//**************************************************************************************************************
 	}
 	static class PassVerifier extends InputVerifier {
@@ -161,16 +172,81 @@ public class complaint{
 			Object source = ae.getSource();
 
 			if(source == btnSubmit){
+                            SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+                            @Override
+                            protected Boolean doInBackground() throws Exception {
+                            
                             try {
-                                add_values();
-                            } catch (ClassNotFoundException ex) {
-                                Logger.getLogger(complaint.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (SQLException ex) {
-                                Logger.getLogger(complaint.class.getName()).log(Level.SEVERE, null, ex);
+                                Class.forName("com.mysql.jdbc.Driver");
+                                        } catch (ClassNotFoundException e) {
+                                          throw e;
+                                        }
+                                        try {
+                                            con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
+
+                                            name = txtName.getText();
+                                            fname = txtFatherName.getText();
+                                            contact = txtContact.getText();
+                                            email = txtEmail.getText();
+                                            doi = txtDOI.getText();
+                                            ps = txtPS.getText();
+                                            dep = String.valueOf(txtDepartment.getSelectedItem());
+                                            desc = txtArea.getText();
+                                            int stat=0;
+                                            
+                                            // generating tracking id from fir_id
+                                            idOne = UUID.randomUUID();
+                                            String sql="INSERT INTO fir (FIR_NAME, FIR_FNAME, FIR_EMAIL, FIR_CONTACT, FIR_DOI, FIR_PS, FIR_DEP, FIR_DESC, FIR_STAT, FIR_EMAIL_SENT, FIR_PO_ID, FIR_TRACK) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+                                            PreparedStatement pst = con.prepareStatement(sql);
+
+                                            pst.setString(1, name);
+                                            pst.setString(2, fname);
+                                            pst.setString(3, email);
+                                            pst.setString(4, contact);
+                                            pst.setString(5, doi);
+                                            pst.setString(6, ps);
+                                            pst.setString(7, dep);
+                                            pst.setString(8, desc);
+                                            pst.setInt(9, stat);
+                                            pst.setInt(10, stat);
+                                            pst.setString(11, "");
+                                            pst.setString(12, idOne.toString());
+                                            pst.executeUpdate();
+                                            
+                                          } catch (SQLException e) {
+                                            throw e;
+                                          } finally {
+                                            con.close();
+                                          }
+
+                             return true;
                             }
-                            JOptionPane.showMessageDialog(null, "Complaint Registered");
-                            frame.setVisible(false);
-                        }
+                            protected void done() {
+    
+                                boolean status;
+                                try {
+                                 // Retrieve the return value of doInBackground.
+                                    status = get();
+                                    
+                                    StringSelection stringSelection = new StringSelection(idOne.toString());
+                                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                    clipboard.setContents(stringSelection, null);
+                                    JTextArea text = new JTextArea("Your tracking id is: " +idOne.toString() + "\n\tKeep this id safe with you.\n\n\tWe have copied the traking id to your clipboard!");
+
+                                    JOptionPane.showMessageDialog(null, text);
+                                    frame.setVisible(false);
+                                } catch (InterruptedException e) {
+                                 // This is thrown if the thread's interrupted.
+                                } catch (ExecutionException e) {
+                                 // This is thrown if we throw an exception
+                                 // from doInBackground.
+                                }
+   }
+                           };
+  
+                    worker.execute();
+                                    
+                            }
                         else if(source == btnCancel){
                             frame.setVisible(false);
                         }
@@ -178,55 +254,50 @@ public class complaint{
 	}
         
         public static void add_values() throws ClassNotFoundException, SQLException {
-            System.out.println("Attempting to contact DB ... ");
-            
-            Statement stmt = null;
-            int result=0;
-            try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            } catch (ClassNotFoundException e) {
-              throw e;
-            }
-            try {
-                // will create DB if does not exist
-                // "SA" is default user with hypersql
-                con = DriverManager.getConnection(connectionString, "SA", "");
-                stmt = con.createStatement(); 
-                
-                String name = txtName.getText();
-                String fname = txtFatherName.getText();
-                String contact = txtContact.getText();
-                String email = txtEmail.getText();
-                String doi = txtDOI.getText();
-                String ps = txtPS.getText();
-                String dep = String.valueOf(txtDepartment.getSelectedItem());
-                String desc = txtArea.getText();
-                int stat=0;
-//                String query = "INSERT INTO fir (FIR_NAME, FIR_FNAME, FIR_EMAIL, FIR_CONTACT, FIR_DOI, FIR_POI, FIR_DEP, FIR_DESC) VALUES('"+name+"','"+fname+"','"+email+"','"+contact+"','"+doi+"','"+poi+"','"+dep+"','"+desc+"');";
-//                result = stmt.executeUpdate(query);
-//                con.commit();
-                String sql="INSERT INTO fir (FIR_NAME, FIR_FNAME, FIR_EMAIL, FIR_CONTACT, FIR_DOI, FIR_PS, FIR_DEP, FIR_DESC, FIR_STAT, FIR_EMAIL_SENT, FIR_PO_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-                PreparedStatement pst = con.prepareStatement(sql);
-                
-                pst.setString(1, name);
-                pst.setString(2, fname);
-                pst.setString(3, email);
-                pst.setString(4, contact);
-                pst.setString(5, doi);
-                pst.setString(6, ps);
-                pst.setString(7, dep);
-                pst.setString(8, desc);
-                pst.setInt(9, stat);
-                pst.setInt(10, stat);
-                pst.setString(11, "");
-
-                pst.executeUpdate();
-                System.out.println("fir_po_id working fine");
-              } catch (SQLException e) {
-                throw e;
-              } finally {
-                con.close();
-              }
+//            System.out.println("Attempting to contact DB ... ");
+//            
+//            try {
+////              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//                Class.forName("com.mysql.jdbc.Driver");
+//            } catch (ClassNotFoundException e) {
+//              throw e;
+//            }
+//            try {
+////                con = DriverManager.getConnection(connectionString, "SA", "");
+//                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
+//                
+//                String name = txtName.getText();
+//                String fname = txtFatherName.getText();
+//                String contact = txtContact.getText();
+//                String email = txtEmail.getText();
+//                String doi = txtDOI.getText();
+//                String ps = txtPS.getText();
+//                String dep = String.valueOf(txtDepartment.getSelectedItem());
+//                String desc = txtArea.getText();
+//                int stat=0;
+//
+//                String sql="INSERT INTO fir (FIR_NAME, FIR_FNAME, FIR_EMAIL, FIR_CONTACT, FIR_DOI, FIR_PS, FIR_DEP, FIR_DESC, FIR_STAT, FIR_EMAIL_SENT, FIR_PO_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+//                PreparedStatement pst = con.prepareStatement(sql);
+//                
+//                pst.setString(1, name);
+//                pst.setString(2, fname);
+//                pst.setString(3, email);
+//                pst.setString(4, contact);
+//                pst.setString(5, doi);
+//                pst.setString(6, ps);
+//                pst.setString(7, dep);
+//                pst.setString(8, desc);
+//                pst.setInt(9, stat);
+//                pst.setInt(10, stat);
+//                pst.setString(11, "");
+//
+//                pst.executeUpdate();
+//                System.out.println("fir_po_id working fine");
+//              } catch (SQLException e) {
+//                throw e;
+//              } finally {
+//                con.close();
+//              }
         }
 	static void init() {
 		try
