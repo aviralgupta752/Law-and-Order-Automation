@@ -7,15 +7,17 @@ import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 
 class about
 {
 	static JFrame frame;
 	static JPanel panel, mainpanel;
 	static JLabel img, text;
-
-	public static void display()
+        static URL url;
+	public void display() throws IOException
 	{
 		frame = new JFrame("About");
 		panel = new JPanel(new GridLayout(1,2,10,10));
@@ -27,13 +29,13 @@ class about
 		BufferedImage image = null;
 		try 
 		{
-            image = ImageIO.read(new File("src_img/img2.png"));
+                    image = ImageIO.read(getClass().getClassLoader().getResource("img2.png"));
 		} 
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		}
-
+                
 		ImageIcon imageIcon = new ImageIcon(fitimage(image, 550, 620));
 		img.setIcon(imageIcon);
 		panel.add(img);
@@ -57,7 +59,7 @@ class about
 	    g2.dispose();
 	    return resizedimage;
 	}
-	static void init()
+	static void init() throws IOException
 	{
 		try
 		{
@@ -71,7 +73,7 @@ class about
 		obj.display();
 	}
 
-	public static void main(String []args)
+	public static void main(String []args) throws IOException
 	{
 		init();
 	}
