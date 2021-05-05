@@ -118,6 +118,7 @@ public class register_criminal {
     frame.setSize(1920, 1080);
     frame.setVisible(true);
     frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    frame.getRootPane().setDefaultButton(btnSubmit);
     // **************************************************************************************************************
   }
 
