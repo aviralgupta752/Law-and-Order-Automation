@@ -74,6 +74,7 @@ public class police_station{
 		frame.setSize(1920,1080);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.getRootPane().setDefaultButton(btnSubmit);
 	}
 	static class PassVerifier extends InputVerifier {
 		public boolean verify(JComponent input)
@@ -95,19 +96,19 @@ public class police_station{
         
         public static void add_values() throws ClassNotFoundException, SQLException {
             System.out.println("Attempting to contact DB ... ");
-            
-            Statement stmt = null;
-            int result=0;
+
             try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+              Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException e) {
               throw e;
             }
             try {
                 // will create DB if does not exist
                 // "SA" is default user with hypersql
-                con = DriverManager.getConnection(connectionString, "SA", "");
-                stmt = con.createStatement(); 
+//                con = DriverManager.getConnection(connectionString, "SA", "");
+                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
+                 
                 
                 String name = txtPSName.getText();
                 String location = txtLocation.getText();
