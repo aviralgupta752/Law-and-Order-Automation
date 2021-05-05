@@ -55,6 +55,7 @@ public class admin_login
         frame.setVisible(true);
         frame.setLayout(new GridLayout(6,1));
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.getRootPane().setDefaultButton(btnLogin);
     }
     static class CustomActionListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
