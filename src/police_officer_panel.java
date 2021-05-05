@@ -88,13 +88,15 @@ public class police_officer_panel
                         System.out.println("Attempting to contact DB ... ");
 
                         try {
-                          Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//                          Class.forName("org.hsqldb.jdbc.JDBCDriver");
+                          Class.forName("com.mysql.jdbc.Driver");
                         } catch (ClassNotFoundException e) {
                           throw e;
                         }
 
                         try {
-                            con = DriverManager.getConnection(connectionString, "SA", "");
+//                            con = DriverManager.getConnection(connectionString, "SA", "");
+                            con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                             // getting officer ps
                             String sql_ps="select PO_PS, PO_DEP, PO_ID from police_officer as t where t.PO_NAME=?";
                             PreparedStatement pst_ps = con.prepareStatement(sql_ps);
