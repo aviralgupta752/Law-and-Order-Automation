@@ -72,19 +72,22 @@ class update_status
         frame.setVisible(true);
         frame.setLayout(new GridLayout(9,1));
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.getRootPane().setDefaultButton(btnLogin);
     }
     
     public static void test_values(String fir_id) throws SQLException, ClassNotFoundException {
             System.out.println("Attempting to contact DB ... ");
 
             try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+                Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException e) {
               throw e;
             }
             
             try {
-                con = DriverManager.getConnection(connectionString, "SA", "");
+//                con = DriverManager.getConnection(connectionString, "SA", "");
+                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 
                 // Updating value of fir_id status
                 String stat = String.valueOf(status.getSelectedItem());
@@ -112,7 +115,8 @@ class update_status
             String username = txtUser.getText();
             String password = txtPass.getText();
             try {
-              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+//              Class.forName("org.hsqldb.jdbc.JDBCDriver");
+                Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException ae) {
                 try {
                     throw ae;
@@ -122,7 +126,8 @@ class update_status
             }
             
             try {
-                con = DriverManager.getConnection(connectionString, "SA", "");
+//                con = DriverManager.getConnection(connectionString, "SA", "");
+                con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 // Getting current officer's department
                 String sql="select * from police_officer_list where USERNAME=? and PASSWORD=?";
                 PreparedStatement pst = con.prepareStatement(sql);
