@@ -13,24 +13,32 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 public class police_application{
 	static JFrame frame;
 	static JButton btnSubmit, btnCancel;
-	static JPanel panel, panel1, panel2;
-	static JLabel lblDrugs, lblAid, lblName, lblLenses, lblDOB, lblEmail, lblContact, lblPoliceStation, lblGender, lblDepartment;
+	static JPanel panel, panel1, panel2, mainpanel;
+	static JLabel lblheading, lblspace, lblDrugs, lblAid, lblName, lblLenses, lblDOB, lblEmail, lblContact, lblPoliceStation, lblGender, lblDepartment;
 	static JTextField txtName, txtDOB, txtEmail, txtPoliceStation, txtContact;
 	static JComboBox txtGender, txtDrugs, txtAid, txtLenses, txtDepartment;
 	static Border redline = BorderFactory.createLineBorder(Color.RED);
-	
+	static Border blackline = BorderFactory.createLineBorder(new Color(235,235,235));
+	static Font font1 = new Font("Calibri", Font.BOLD, 24);
+        
         static Connection con;
-        static String connectionString = "jdbc:hsqldb:file:db_data/database;hsqldb.lock_file=false";
 	public static void user_details()
 	{
 		frame = new JFrame("POLICE APPLICATION");
-		panel = new JPanel(new GridLayout(11,1,10,10));
-		panel1 = new JPanel(new GridLayout(11,1,10,10));
+		mainpanel = new JPanel(new BorderLayout(10,10));
+		panel = new JPanel(new GridLayout(11,1,0,0));
+		panel1 = new JPanel(new GridLayout(11,1,0,0));
 		panel2 = new JPanel(new GridLayout(1,3,0,0));
-
+                
+                lblheading = new JLabel("<HTML><h1>POLICE APPLICATION</h1></HTML>", JLabel.CENTER);
+		lblheading.setForeground(new Color(255,189,68));
 		//**************************************************************************************************************
 		// USER DETAILS
 		lblName = new JLabel("<HTML><h3>Name: </h3></HTML>", JLabel.CENTER);
@@ -43,12 +51,13 @@ public class police_application{
 		lblDrugs = new JLabel("<HTML><h3>Have you ever been dependant on drugs or alcohol?</h3></HTML>", JLabel.CENTER);
 		lblAid = new JLabel("<HTML><h3>Do you use hearing aids?</h3></HTML>", JLabel.CENTER);
 		lblLenses = new JLabel("<HTML><h3>Do you use glasses for your eyesight?</h3></HTML>", JLabel.CENTER);
-
+                lblspace = new JLabel("				    ", JLabel.CENTER);
+                
 		btnCancel = new JButton("<HTML><h3>Cancel</h3></HTML>");
-		btnCancel.setBackground(new Color(255,92,96));
+		btnCancel.setBackground(new Color(1, 145, 135));
 
 		btnSubmit = new JButton("<HTML><h3>Submit</h3></HTML>");
-		btnSubmit.setBackground(new Color(52,119,235));
+		btnSubmit.setBackground(new Color(1, 145, 135));
 		
 		btnCancel.addActionListener(new CustomActionListener());
 		btnSubmit.addActionListener(new CustomActionListener());
@@ -80,7 +89,24 @@ public class police_application{
 		txtName.setInputVerifier(new PassVerifier());
 		txtEmail.setInputVerifier(new PassVerifier());
 		txtContact.setInputVerifier(new PassVerifier());
+                
+                lblName.setBorder(blackline);
+		lblDOB.setBorder(blackline);
+		lblEmail.setBorder(blackline);
+		lblContact.setBorder(blackline);
+		lblPoliceStation.setBorder(blackline);
+		lblGender.setBorder(blackline);
+		lblDepartment.setBorder(blackline);
+		lblDrugs.setBorder(blackline);
+		lblAid.setBorder(blackline);
+		lblLenses.setBorder(blackline);
 
+		txtName.setBorder(blackline);
+		txtDOB.setBorder(blackline);
+		txtEmail.setBorder(blackline);
+		txtContact.setBorder(blackline);
+		lblPoliceStation.setBorder(blackline);
+                
 		panel2.add(new JLabel("<HTML><h1>POLICE APPLICATION</h1></HTML>", JLabel.CENTER));
 		panel.add(lblName);			panel1.add(txtName);
 		panel.add(lblDOB);			panel1.add(txtDOB);
@@ -98,7 +124,14 @@ public class police_application{
 		// panel.setBackground(new Color(45, 45, 45));
 		panel2.setBackground(new Color(255,189,68));
 
-		frame.setContentPane(panel2);
+		mainpanel.add(lblheading, BorderLayout.NORTH);
+		mainpanel.add(panel2, BorderLayout.CENTER);
+		mainpanel.add(btnCancel, BorderLayout.LINE_START);
+		mainpanel.add(lblspace, BorderLayout.SOUTH);
+		mainpanel.add(btnSubmit, BorderLayout.LINE_END);
+		mainpanel.setBackground(new Color(45,45,45));
+
+		frame.setContentPane(mainpanel);
 		frame.setSize(1920,1080);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -156,6 +189,8 @@ public class police_application{
                                 Logger.getLogger(complaint.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (SQLException ex) {
                                 Logger.getLogger(complaint.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (NoSuchAlgorithmException ex) {
+                                Logger.getLogger(police_application.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             JOptionPane.showMessageDialog(null, "Police Officer Registered");
                             frame.setVisible(false);
@@ -166,18 +201,37 @@ public class police_application{
 		}
 	}
         
-        public static void add_values() throws ClassNotFoundException, SQLException {
+        public static String getSecurePassword(String password, byte[] salt) {
+
+            String generatedPassword = null;
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                md.update(salt);
+                byte[] bytes = md.digest(password.getBytes());
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < bytes.length; i++) {
+                    sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                }
+                generatedPassword = sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            return generatedPassword;
+        }
+        private static byte[] getSalt() throws NoSuchAlgorithmException {
+            SecureRandom random = new SecureRandom();
+            byte[] salt = new byte[16];
+            random.nextBytes(salt);
+            return salt;
+        }
+        public static void add_values() throws ClassNotFoundException, SQLException, NoSuchAlgorithmException {
             System.out.println("Attempting to contact DB ... ");
             try {
-//              Class.forName("org.hsqldb.jdbc.JDBCDriver");
               Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException e) {
               throw e;
             }
             try {
-                // will create DB if does not exist
-                // "SA" is default user with hypersql
-//                con = DriverManager.getConnection(connectionString, "SA", "");
                 con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
                 // Creating police officer entry
                 String name = txtName.getText();
@@ -210,14 +264,19 @@ public class police_application{
                 pst_po.executeUpdate();
                 
                 // Creating police officer creds
-                String sql_creds="INSERT INTO police_officer_list (USERNAME, PASSWORD) VALUES(?,?)";
+                // getting sha256 hash of police officer password
+                String sql_creds="INSERT INTO police_officer_list (USERNAME, POLICE_PASSWORD, POLICE_PASSWORD_SALT) VALUES(?,?,?)";
+                byte[] salt_po = getSalt();
+                String password_po = getSecurePassword(name, salt_po);
+                
                 PreparedStatement pst_creds = con.prepareStatement(sql_creds);
                 pst_creds.setString(1, name);
-                pst_creds.setString(2, name);
+                pst_creds.setString(2, password_po);
+                pst_creds.setBytes(3, salt_po);
                 
                 pst_creds.executeUpdate();
                 
-                // Creating 
+                 
               } catch (SQLException e) {
                 throw e;
               } finally {
