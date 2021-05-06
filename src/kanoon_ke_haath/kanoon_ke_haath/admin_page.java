@@ -17,16 +17,15 @@ import kanoon_ke_haath.police_station;
 import kanoon_ke_haath.show_police_station_verification;
 import kanoon_ke_haath.register_criminal;
 import kanoon_ke_haath.edit_ps;
-class admin_page
-{
+
+class admin_page {
 	static JFrame frame;
 	static JPanel panel, panel1, panel2, mainpanel;
 	static JLabel lbladmin, img, space;
 	static JButton addofficerBtn, quitBtn, showpsBtn, addpsBtn, addcrimBtn, editpsBtn;
 
-	public void display()
-	{
-                frame = new JFrame("Main Screen");
+	public void display() {
+		frame = new JFrame("Main Screen");
 		panel = new JPanel(new BorderLayout(10, 10));
 		panel1 = new JPanel(new GridLayout(8, 1, 10, 10));
 		panel2 = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -41,34 +40,31 @@ class admin_page
 		addofficerBtn = new JButton("<HTML><h2>Appoint a Police Officer</h2></HTML>");
 		quitBtn = new JButton("<HTML><h2>Quit</h2></HTML>");
 		addcrimBtn = new JButton("<HTML><h2>Register criminal</h2></HTML>");
-                editpsBtn = new JButton("<HTML><h2>Edit police station</h2></HTML>");
+		editpsBtn = new JButton("<HTML><h2>Edit police station</h2></HTML>");
 		space = new JLabel("    ");
 
 		addpsBtn.addActionListener(new CustomActionListener());
 		showpsBtn.addActionListener(new CustomActionListener());
 		addofficerBtn.addActionListener(new CustomActionListener());
 		quitBtn.addActionListener(new CustomActionListener());
-                addcrimBtn.addActionListener(new CustomActionListener());
-                editpsBtn.addActionListener(new CustomActionListener());
-                
-		quitBtn.setBackground(new Color(255,92,96));
-		
+		addcrimBtn.addActionListener(new CustomActionListener());
+		editpsBtn.addActionListener(new CustomActionListener());
+
+		quitBtn.setBackground(new Color(255, 92, 96));
+
 		panel1.add(addpsBtn);
 		panel1.add(showpsBtn);
 		panel1.add(addofficerBtn);
-                panel1.add(addcrimBtn);
-		
-                panel1.add(editpsBtn);
-                panel1.add(quitBtn);
-                
+		panel1.add(addcrimBtn);
+
+		panel1.add(editpsBtn);
+		panel1.add(quitBtn);
+
 		img = new JLabel(" ", JLabel.CENTER);
 		BufferedImage image = null;
-		try 
-		{
-                    image = ImageIO.read(getClass().getClassLoader().getResource("badge.jpg"));
-		} 
-		catch (Exception e) 
-		{
+		try {
+			image = ImageIO.read(new File("badge.jpg"));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -76,9 +72,9 @@ class admin_page
 		img.setIcon(imageIcon);
 		panel2.add(img);
 		panel2.add(panel1);
-					 
+
 		panel.add(panel2, BorderLayout.CENTER);
-		panel.add(lbladmin, BorderLayout.NORTH); 
+		panel.add(lbladmin, BorderLayout.NORTH);
 		panel.add(space, BorderLayout.LINE_END);
 
 		panel.setBackground(new Color(45, 45, 45));
@@ -87,20 +83,21 @@ class admin_page
 
 		mainpanel.add(panel);
 		frame.add(mainpanel);
-		frame.setSize(1920,1080);
+		frame.setSize(1920, 1080);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	static Image fitimage(Image img , int w , int h)
-	{
-	    BufferedImage resizedimage = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
-	    Graphics2D g2 = resizedimage.createGraphics();
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(img, 0, 0,w,h,null);
-	    g2.dispose();
-	    return resizedimage;
+
+	static Image fitimage(Image img, int w, int h) {
+		BufferedImage resizedimage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2 = resizedimage.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2.drawImage(img, 0, 0, w, h, null);
+		g2.dispose();
+		return resizedimage;
 	}
-	static class CustomActionListener implements ActionListener{
+
+	static class CustomActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			Object source = ae.getSource();
 
@@ -109,35 +106,28 @@ class admin_page
 			} else if (source == addpsBtn) {
 				police_station.init();
 			} else if (source == showpsBtn) {
-				show_police_station_verification.main(new String[]{"No"});
+				show_police_station_verification.main(new String[] { "No" });
 			} else if (source == addcrimBtn) {
 				register_criminal.init();
-			}
-                        else if (source == editpsBtn) {
-                                show_police_station_verification.main(new String[]{"Yes"});
-                        } 
-                        else if (source == quitBtn) {
+			} else if (source == editpsBtn) {
+				show_police_station_verification.main(new String[] { "Yes" });
+			} else if (source == quitBtn) {
 				frame.setVisible(false);
-                        }
+			}
 		}
 	}
-			
-	static void init()
-	{
-		try
-		{
+
+	static void init() {
+		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		admin_page obj = new admin_page();
 		obj.display();
 	}
 
-	public static void main(String []args)
-	{
+	public static void main(String[] args) {
 		init();
 	}
 }

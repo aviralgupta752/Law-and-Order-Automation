@@ -1,0 +1,10 @@
+{
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "/Users/anshverma/Downloads/commons-io-2.8.0/commons-io-2.8.0.jar",
+    "/Users/anshverma/Downloads/mysql-connector-java-8.0.24/mysql-connector-java-8.0.24.jar"
+  ],
+  "java.project.sourcePaths": [
+    "src/kanoon_ke_haath"
+  ]
+}

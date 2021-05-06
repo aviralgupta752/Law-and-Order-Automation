@@ -29,7 +29,6 @@ public class register_application {
 	static Border redline = BorderFactory.createLineBorder(Color.RED);
 
 	static Connection con;
-	static String connectionString = "jdbc:hsqldb:file:db_data/database;hsqldb.lock_file=false";
 
 	public static void user_details() {
 		frame = new JFrame("FILL DETAILS");
@@ -111,7 +110,7 @@ public class register_application {
 		frame.setSize(1920, 1080);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                frame.getRootPane().setDefaultButton(btnSubmit);
+		frame.getRootPane().setDefaultButton(btnSubmit);
 		// **************************************************************************************************************
 	}
 
@@ -204,8 +203,8 @@ public class register_application {
 		}
 
 		try {
-			con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test","police","Policemgmt@7police");
-			
+			con = DriverManager.getConnection("jdbc:mysql://65.1.1.8:3306/test", "police", "Policemgmt@7police");
+
 			String name = txtName.getText();
 			String fname = txtFatherName.getText();
 			String contact = txtContact.getText();
@@ -215,18 +214,18 @@ public class register_application {
 			String type = String.valueOf(txtDepartment.getSelectedItem());
 			String ps = txtPS.getText();
 			String adh = txtAadhar.getText();
-                        
-                        String sql_ps = "SELECT PO_NAME, PO_ID FROM police_officer WHERE PO_PS=?";
-                        PreparedStatement pst_ps = con.prepareStatement(sql_ps);
-                        
-                        pst_ps.setString(1, ps);
-                        ResultSet r = pst_ps.executeQuery();
-                        String off_name="";
-                        int off_id=0;
-			if(r.next()){
-                            off_name = r.getString(1);
-                            off_id = r.getInt(2);
-                        }
+
+			String sql_ps = "SELECT PO_NAME, PO_ID FROM police_officer WHERE PO_PS=?";
+			PreparedStatement pst_ps = con.prepareStatement(sql_ps);
+
+			pst_ps.setString(1, ps);
+			ResultSet r = pst_ps.executeQuery();
+			String off_name = "";
+			int off_id = 0;
+			if (r.next()) {
+				off_name = r.getString(1);
+				off_id = r.getInt(2);
+			}
 			String sql = "INSERT INTO applic (APP_TYPE, APP_NAM, APP_FNAME, APP_EMAIL, APP_CONTACT, APP_DOI, APP_PAN, APP_AADHAR, APP_PO_NAME, APP_PO_ID, APP_PS) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement pst = con.prepareStatement(sql);
 
