@@ -57,6 +57,7 @@ public class tc{
 		txtStatus = new JLabel("<HTML><h2>" + "Nhi Maloom" + "</h2></HTML>");
 
 		// panel2.add(lblspace);
+		panel2.add(new JLabel("<HTML><h1>TRACK COMPLAINT</h1></HTML>", JLabel.CENTER));
 		panel.add(lblName);			panel1.add(txtName);
 		panel.add(lblFatherName);	panel1.add(txtFatherName);
 		panel.add(lblEmail);		panel1.add(txtEmail);
@@ -76,12 +77,11 @@ public class tc{
 		lblDepartment.setBorder(blackline);	txtDepartment.setBorder(blackline);
 		lblDesc.setBorder(blackline);			txtArea.setBorder(blackline);
 		lblStatus.setBorder(blackline);		txtStatus.setBorder(blackline);
-		// txtName.setBorder(blackline);
-		// panel.setBorder(blackline);
+
 		panel2.add(panel);
 		panel2.add(panel1);
-		// panel2.add(new JLabel("		 ", JLabel.CENTER));
-		// panel2.add(lblspace);
+		panel2.setBackground(new Color(255,189,68));
+		
 
 		mainpanel.add(lblheading, BorderLayout.NORTH);
 		mainpanel.add(panel2, BorderLayout.CENTER);
