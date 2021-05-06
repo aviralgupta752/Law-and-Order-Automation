@@ -23,14 +23,15 @@ public class complaint{
 	static JFrame frame;
 	static JButton btnSubmit, btnCancel;
 
-	static JPanel panel, panel1, panel2;
+	static JPanel panel, panel1, panel2, mainpanel;
 
 	static JTextArea txtArea;
 	
-	static JLabel lblFatherName, lblName, lblEmail, lblContact, lblDOI, lblPS, lblDepartment, lblDesc;
+	static JLabel lblFatherName, lblName, lblEmail, lblContact, lblDOI, lblPS, lblDepartment, lblDesc,lblspace, lblheading;
 	static JTextField txtName, txtFatherName, txtEmail, txtDOI, txtPS, txtContact;
 	static JComboBox txtDepartment;
 	static Border redline = BorderFactory.createLineBorder(Color.RED);
+        static Border blackline = BorderFactory.createLineBorder(new Color(235,235,235));
         
         static String name, fname, contact, email, doi, ps, dep, desc;
         static Connection con;
@@ -38,10 +39,15 @@ public class complaint{
 	public static void user_details()
 	{
 		frame = new JFrame("FILL DETAILS");
-		panel = new JPanel(new GridLayout(10,1,10,10));
-		panel1 = new JPanel(new GridLayout(10,1,10,10));
+                mainpanel = new JPanel(new BorderLayout(10,10));
+		panel = new JPanel(new GridLayout(10,1,0,0));
+		panel1 = new JPanel(new GridLayout(10,1,0,0));
+//		panel = new JPanel(new GridLayout(10,1,10,10));
+//		panel1 = new JPanel(new GridLayout(10,1,10,10));
 		panel2 = new JPanel(new GridLayout(1,3,0,0));
 
+                lblheading = new JLabel("<HTML><h1>FIR</h1></HTML>", JLabel.CENTER);
+		lblheading.setForeground(new Color(255,189,68));
 		//**************************************************************************************************************
 		// USER DETAILS
 			lblName = new JLabel("<HTML><h3>Name: </h3></HTML>", JLabel.CENTER);
@@ -52,12 +58,13 @@ public class complaint{
 			lblPS = new JLabel("<HTML><h3>Name of police station </h3></HTML>", JLabel.CENTER);
 			lblDepartment = new JLabel("<HTML><h3>Department: </h3></HTML>", JLabel.CENTER);
 			lblDesc  = new JLabel("<HTML><h3>Description: </h3></HTML>", JLabel.CENTER);
-
+                        lblspace = new JLabel("				    ", JLabel.CENTER);
+                        
 			btnCancel = new JButton("<HTML><h3>Cancel</h3></HTML>");
-			btnCancel.setBackground(new Color(255,92,96));
+			btnCancel.setBackground(new Color(1, 145, 135));
 
 			btnSubmit = new JButton("<HTML><h3>Submit</h3></HTML>");
-			btnSubmit.setBackground(new Color(52,119,235));
+			btnSubmit.setBackground(new Color(1, 145, 135));
 			
 			btnCancel.addActionListener(new CustomActionListener());
 			btnSubmit.addActionListener(new CustomActionListener());
@@ -83,16 +90,25 @@ public class complaint{
 			txtContact.setInputVerifier(new PassVerifier());
 			txtDOI.setInputVerifier(new PassVerifier());
 			txtPS.setInputVerifier(new PassVerifier());
+                        
+                        lblName.setBorder(blackline);
+                        lblFatherName.setBorder(blackline);
+                        lblEmail.setBorder(blackline);
+                        lblContact.setBorder(blackline);
+                        lblDOI.setBorder(blackline);
+                        lblPS.setBorder(blackline);
+                        lblDepartment.setBorder(blackline);
+                        lblDesc.setBorder(blackline);
 
-			panel2.add(new JLabel("<HTML><h1>What is a police complaint?</h1><h3>A Police Complaint is initial reporting of any crime or offence. "
-                                + "It is a narration of facts about the incident in layman’s words.</h3><h1>When can a police complaint be filed?</h1><h3>One should "
-                                + "ideally file a police complaint immediately after the incident/crime have taken place. In certain cases of sexual harassment, "
-                                + "domestic violence, rape, etc. women usually take time to come out and report the crime/incident due to mental trauma. "
-                                + "In such cases, even if there is a delay one can file a police complaint.</h3><h1>Who can file a Police Complaint?</h1><h3>Anyone "
-                                + "can file a police complaint. The victim of the crime, victim’s family members, friends or any witness to the crime can file a police "
-                                + "complaint.</h3></HTML>", JLabel.CENTER));
-//                        panel2.add(stat);
+                        txtName.setBorder(blackline);
+                        txtFatherName.setBorder(blackline);
+                        txtEmail.setBorder(blackline);
+                        txtContact.setBorder(blackline);
+                        txtDOI.setBorder(blackline);
+                        txtPS.setBorder(blackline);
+
 //                        panel2.add("jProgressBar", jProgressBar);
+                        panel2.add(new JLabel("<HTML><h1>FILE A COMPLAINT</h1></HTML>", JLabel.CENTER));
 			panel.add(lblName);			panel1.add(txtName);
 			panel.add(lblFatherName);	panel1.add(txtFatherName);
 			panel.add(lblEmail);		panel1.add(txtEmail);
@@ -107,8 +123,15 @@ public class complaint{
 			panel2.add(panel1);
 			// panel.setBackground(new Color(45, 45, 45));
 			panel2.setBackground(new Color(255,189,68));
-
-			frame.setContentPane(panel2);
+                        
+                        mainpanel.add(lblheading, BorderLayout.NORTH);
+                        mainpanel.add(panel2, BorderLayout.CENTER);
+                        mainpanel.add(btnCancel, BorderLayout.LINE_START);
+                        mainpanel.add(lblspace, BorderLayout.SOUTH);
+                        mainpanel.add(btnSubmit, BorderLayout.LINE_END);
+                        mainpanel.setBackground(new Color(45,45,45));
+                        
+			frame.setContentPane(mainpanel);
                         
 			frame.setSize(1920,1080);
 			frame.setVisible(true);
@@ -231,7 +254,7 @@ public class complaint{
                                     StringSelection stringSelection = new StringSelection(idOne.toString());
                                     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                                     clipboard.setContents(stringSelection, null);
-                                    JTextArea text = new JTextArea("Your tracking id is: " +idOne.toString() + "\n\tKeep this id safe with you.\n\n\tWe have copied the traking id to your clipboard!");
+                                    JTextArea text = new JTextArea("Your tracking id is: " +idOne.toString() + "\n\tKeep this id safe with you.\n\nWe have copied the traking id to your clipboard!");
 
                                     JOptionPane.showMessageDialog(null, text);
                                     frame.setVisible(false);
