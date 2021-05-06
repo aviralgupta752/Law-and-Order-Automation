@@ -20,7 +20,7 @@ public class police_station{
 
 	public static void user_details()
 	{
-		frame = new JFrame("FILL DETAILS");
+		frame = new JFrame("POLICE STATION DETAILS");
 		mainpanel = new JPanel(new BorderLayout(10,10));
 		panel = new JPanel(new GridLayout(7,1,0,0));
 		panel1 = new JPanel(new GridLayout(7,1,0,0));
@@ -70,6 +70,7 @@ public class police_station{
 
 		txtPhone.setInputVerifier(new PassVerifier());
 		
+		panel2.add(new JLabel("<HTML><h1>POLICE STATION</h1></HTML>", JLabel.CENTER));
 		panel.add(lblPSName);		panel1.add(txtPSName);
 		panel.add(lblLocation);		panel1.add(txtLocation);
 		panel.add(lblCity);			panel1.add(txtCity);
@@ -87,8 +88,8 @@ public class police_station{
 		mainpanel.add(btnCancel, BorderLayout.LINE_START);
 		mainpanel.add(lblspace, BorderLayout.SOUTH);
 		mainpanel.add(btnSubmit, BorderLayout.LINE_END);
-		
 		mainpanel.setBackground(new Color(45,45,45));
+		
 		frame.setContentPane(mainpanel);
 		frame.setSize(1920,1080);
 		frame.setVisible(true);
