@@ -24,7 +24,7 @@ public class showps
 		frame = new JFrame("VIEW ALL CASES");
 		mainpanel = new JPanel(new BorderLayout(10,10));
 		panel = new JPanel(new GridLayout(1,3,0,0));
-		lblCase = new JLabel("<HTML><h1>ALL POLICE STAIONS</h1></HTML>", JLabel.CENTER);
+		lblCase = new JLabel("<HTML><h1>ALL POLICE STATIONS</h1></HTML>", JLabel.CENTER);
 		lblCase.setForeground(new Color(255,189,68));
 
 		btnBack = new JButton("<HTML><h2>Back</h2></HTML>");
