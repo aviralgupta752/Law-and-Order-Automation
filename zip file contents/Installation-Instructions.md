@@ -4,7 +4,7 @@ For product testing (kanoon.jar file)
   Install java using the instructions given in the [official installation page](https://docs.oracle.com/goldengate/1212/gg-winux/GDRAD/java.htm#BGBFJHAB) from Oracle.
 
   Now you can run the kanoon.jar file with either a double click or from the terminal.
-    Comman for terminal: **java -jar kanoon.jar**
+    Command for terminal: **java -jar kanoon.jar**
     
 For NetBeans project file,
   NetBeans project file has been provided as a zip archive, 
